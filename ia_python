@@ -1,0 +1,58 @@
+#!/usr/bin/env python3
+
+import sys
+sys.path.insert(0, './python3/')
+from napi import *
+
+N4S = Napi()
+
+def getSpeed():
+    speed = min(N4S.getDirection() / 2550 * 1.957, 1)
+    #N4S.debug(str(speed));
+    return speed
+
+def needToTurn():
+    rays = N4S.getRays()
+
+    for ray in rays:
+        if ray < 1000:
+            return True
+    return False
+
+def getAlpha(speed):
+    if needToTurn() == False:
+        return 0
+    maxDir = (1 - speed) / 3
+    rangeAverage = 3
+    alpha = 0
+    left = N4S.getRayAt(0);
+    right = N4S.getRayAt(31 - rangeAverage)
+    for i in range(1, rangeAverage) :
+        left += N4S.getRayAt(i)
+        left /= 2
+    for i in range(31 - rangeAverage, 31) :
+        right += N4S.getRayAt(i)
+        right /= 2
+    aMax = max(left, right)
+    aMin = min(left, right)
+    alpha = abs(aMin * 100 / (aMax if aMax != 0 else 1));
+    N4S.debug(str(left) + " :: " + str(right) + " -> " + str(alpha))
+    if alpha > 120:
+        return (maxDir if right < left else -maxDir);
+    if alpha < 70 or alpha > 130 :
+         if right < left :
+             return maxDir;
+         else :
+             return -maxDir;
+    return 0
+
+def on_update():
+    speed   =   getSpeed()
+    alpha   =   getAlpha(speed)
+    middle  =   N4S.getRayAt(15)
+
+    N4S.setThrust( speed, refresh = True )
+    N4S.setDirection( alpha, refresh = True )
+
+if __name__ == '__main__':
+    N4S.start(on_update)
