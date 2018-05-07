@@ -25,6 +25,9 @@ $(NAME): $(OBJ)
 	$(MAKE_LIBMY)
 	$(CC) $(OBJ) $(CFLAGS) $(LIB) -o $(NAME)
 
+n4s:	all
+	cp ai ./n4s/
+
 clean:
 	rm -f $(OBJ)
 	$(MAKE_LIBMY) clean
