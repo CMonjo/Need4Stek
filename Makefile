@@ -11,7 +11,7 @@ CFLAGS	=	-Wextra -W -Wall -I ./include/
 
 LIB	=	-L ./src/lib/ -lleo
 
-SRC	=	src/ia.c	\
+SRC	=	src/main.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
