@@ -23,11 +23,13 @@
 	typedef struct speed_s {
 		float mid_s;
 		char *set_speed;
+		int len;
 	} speed_t;
 
 	typedef struct direction_s {
 		float mid_s;
 		char *set_direction;
+		int len;
 	} direction_t;
 
 	typedef struct nfs_s {
