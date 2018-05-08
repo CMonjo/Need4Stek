@@ -1,37 +1,39 @@
 ##
 ## EPITECH PROJECT, 2017
-## libmy compilator
+## Project N4S
 ## File description:
-## compiles a libmy.a
+## Build ai binary.
 ##
 
-SRC	=	my_putchar.c		\
-		my_put_nbr.c		\
-		my_putstr.c		\
-		my_strlen.c		\
-		my_printf.c		\
-		my_putnbr_basex.c	\
-		my_putnbr_base.c	\
-		my_putnbr_baseun.c	\
-		my_putnbr_basep.c
+CC	=	gcc
+
+CFLAGS	=	-Wextra -W -Wall -I ./include/
+
+LIB	=	-L ./src/lib/ -lleo
+
+SRC	=	src/ia.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
-NAME	=	libmy.a
+MAKE_LIBMY	=	make -C ./src/lib/
 
-BIN	=	a.out
+NAME	=	ai
 
-FINAL	=	$(NAME)
+all: $(NAME)
 
-all:	AH
+$(NAME): $(OBJ)
+	$(MAKE_LIBMY)
+	$(CC) $(OBJ) $(CFLAGS) $(LIB) -o $(NAME)
 
-AH:
-	gcc -c $(SRC) -W -Wall -Wextra -I.
-	ar rc $(NAME) *.o
+n4s:	all
+	cp ai ./n4s/
+
 clean:
-	rm -f *.o
+	rm -f $(OBJ)
+	$(MAKE_LIBMY) clean
 
-fclean:	clean
-	rm -f $(FINAL)
+fclean: clean
+	rm -f $(NAME)
+	$(MAKE_LIBMY) fclean
 
-re:	fclean all
+re: fclean all
