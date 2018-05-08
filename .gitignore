@@ -11,3 +11,11 @@
 units
 .vscode
 ai
+vrep
+scene
+n4s
+test
+n4s_buffer
+pipes.sh
+
+ia_python
