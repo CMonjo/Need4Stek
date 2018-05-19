@@ -5,35 +5,33 @@
 ## Build ai binary.
 ##
 
-CC	=	gcc
-
-CFLAGS	=	-Wextra -W -Wall -I ./include/
-
-LIB	=	-L ./src/lib/ -lleo
-
 SRC	=	src/main.c	\
 
 OBJ	=	$(SRC:.c=.o)
 
-MAKE_LIBMY	=	make -C ./src/lib/
+CFLAGS	=	-Wextra -W -Wall -I ./include/
+
+LDFLAGS	=	-L ./src/lib/ -l leo
 
 NAME	=	ai
 
+CC	=	gcc
+
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(MAKE_LIBMY)
-	$(CC) $(OBJ) $(CFLAGS) $(LIB) -o $(NAME)
+$(NAME):	$(OBJ)
+		make -C ./src/lib/
+		$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) $(CFLAGS)
 
 n4s:	all
 	cp ai ./n4s/
 
 clean:
+	make clean -C ./src/lib/
 	rm -f $(OBJ)
-	$(MAKE_LIBMY) clean
 
 fclean: clean
+	make fclean -C ./src/lib/
 	rm -f $(NAME)
-	$(MAKE_LIBMY) fclean
 
 re: fclean all
