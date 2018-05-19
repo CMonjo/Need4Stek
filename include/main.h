@@ -7,18 +7,8 @@
 
 #ifndef MAIN_H_
 	#define MAIN_H_
-	#include <stdlib.h>
-	#include <stdio.h>
-	#include <unistd.h>
-	#include <sys/stat.h>
-	#include <sys/types.h>
 	#include <string.h>
-	#include <stdbool.h>
-	#include <fcntl.h>
 	#include "leolib.h"
-
-	#define UNUSED __attribute__((unused))
-	#define READ_SIZE (1)
 
 	typedef struct speed_s {
 		float mid_s;
@@ -45,6 +35,4 @@
 	float get_min(float one, float two);
 	void get_alpha(nfs_t *nfs);
 	float my_fabs(float a_max, float a_min);
-
-
 #endif
