@@ -25,6 +25,7 @@ SRC	=	get_next_line.c		\
 		my_str_rev.c		\
 		my_str_nbr.c		\
 		my_printf.c		\
+		my_strstr.c		\
 
 CC	=	gcc
 
