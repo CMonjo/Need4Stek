@@ -6,6 +6,7 @@
 ##
 
 SRC	=	src/main.c	\
+		src/n4s.c	\
 
 OBJ	=	$(SRC:.c=.o)
 

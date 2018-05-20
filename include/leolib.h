@@ -61,5 +61,4 @@
 	void *list_get(list_t*, int);
 	void list_push(list_t*, void*);
 	int my_printf(char *, ...);
-	char *my_strstr(char const *str, char *to_find);
 #endif

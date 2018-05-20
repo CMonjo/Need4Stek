@@ -21,19 +21,20 @@ int get_word_start(char const *str, int wanted_word, char sep)
 	int x = 0;
 	int word_length = 0;
 	int word_count = 0;
+	int res = 0;
 
 	while (str[x]) {
 		word_length = 0;
-		while (char_is_sep(str[x + word_length], sep) == 1) {
+		while (char_is_sep(str[x + word_length], sep) == 1)
 			word_length += 1;
-		}
 		if (word_length != 0) {
 			x = x + word_length;
 			word_count += 1;
-			if (word_count == wanted_word)
-				return (x - word_length);
+			(word_count == wanted_word) ? res = 1 : 0;
 		} else
 			x += 1;
+		if (res == 1)
+			return (x - word_length);
 	}
 	return (0);
 }
@@ -73,9 +74,8 @@ int get_word_length(char const *str, int wanted_word, char sep)
 		if (word_length != 0) {
 			x = x + word_length;
 			word_count += 1;
-			if (word_count == wanted_word) {
-				wanted_length = word_length;
-			}
+			(word_count == wanted_word) ?
+			wanted_length = word_length : 0;
 		} else
 			x += 1;
 	}
