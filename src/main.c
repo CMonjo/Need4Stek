@@ -41,13 +41,15 @@ int game_end(char *buffer)
 	char *buf;
 	size_t buf_size = 0;
 
-	if (my_strstr(buffer, "Track Cleared") ) {
+	if (my_strstr(buffer, "Track Cleared")) {
 		fprintf(stderr, "SORT\n");
 		write(1, "CAR_FORWARD:0\n", 14);
 		getline(&buf, &buf_size, stdin);
 		write(1, "STOP_SIMULATION\n", 16);
 		exit(0);
 	}
+	if (my_strstr(buffer, "KO"))
+		exit(84);
 	return (0);
 }
 
@@ -113,6 +115,7 @@ int main(void)
 
 	write(1, "START_SIMULATION\n", 17);
 	getline(&buf, &buf_size, stdin);
+	game_end(buf);
 	while(1) {
 		get_lidar(nfs);
 		set_alpha(nfs);
