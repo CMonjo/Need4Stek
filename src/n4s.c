@@ -35,17 +35,20 @@ nfs_t *init_nfs(void)
 	nfs->mid = 0;
 	nfs->speed = 0;
 	nfs->alpha = 0;
+	for (int i = 0; i != 32; i++)
+		nfs->rays[i] = 0;
 	return (nfs);
 }
 
 int game_end(char *buffer)
 {
-	char *buf;
+	char *buf = NULL;
 	size_t buf_size = 0;
 
 	if (strstr(buffer, "Track Cleared")) {
 		write(1, "CAR_FORWARD:0\n", 14);
-		getline(&buf, &buf_size, stdin);
+		if (getline(&buf, &buf_size, stdin) == -1)
+			exit(84);
 		write(1, "STOP_SIMULATION\n", 16);
 		exit(0);
 	}
@@ -56,22 +59,28 @@ int game_end(char *buffer)
 
 void get_lidar(nfs_t *nfs)
 {
-	char *buf;
+	char *buf = NULL;
 	size_t buf_size = 0;
 	char **rays;
 
 	write(1, "GET_INFO_LIDAR\n", 15);
-	getline(&buf, &buf_size, stdin);
+	if (getline(&buf, &buf_size, stdin) == -1)
+		exit(84);
 	rays = my_str_to_word_array(buf, ':');
-	for (int i = 0; i != 32; i++)
+	if (!rays[0] || !rays[1] || !rays[2])
+		return;
+	for (int i = 0; i != 32; i++) {
+		if (!rays[i + 3])
+			return;
 		nfs->rays[i] = atof(rays[i + 3]);
+	}
 	nfs->mid = nfs->rays[15];
 	game_end(buf);
 }
 
 void set_speed(nfs_t *nfs)
 {
-	char *buf;
+	char *buf = NULL;
 	size_t buf_size = 0;
 
 	if (nfs->mid <= 75)
@@ -84,14 +93,15 @@ void set_speed(nfs_t *nfs)
 			break;
 		}
 	}
-	getline(&buf, &buf_size, stdin);
+	if (getline(&buf, &buf_size, stdin) == -1)
+		exit(84);
 	game_end(buf);
 }
 
 void set_alpha(nfs_t *nfs)
 {
 	float dir = nfs->rays[0] - nfs->rays[31];
-	char *buf;
+	char *buf = NULL;
 	size_t buf_size = 0;
 
 	write(1, "WHEELS_DIR:", 11);
@@ -103,6 +113,7 @@ void set_alpha(nfs_t *nfs)
 			break;
 		}
 	}
-	getline(&buf, &buf_size, stdin);
+	if (getline(&buf, &buf_size, stdin) == -1)
+		exit(84);
 	game_end(buf);
 }
