@@ -15,12 +15,13 @@ nfs_t *init_nfs(void);
 
 int main(void)
 {
-	char *buf;
+	char *buf = NULL;
 	size_t buf_size = 0;
 	nfs_t *nfs = init_nfs();
 
 	write(1, "START_SIMULATION\n", 17);
-	getline(&buf, &buf_size, stdin);
+	if (getline(&buf, &buf_size, stdin) == -1)
+		return (84);
 	game_end(buf);
 	while (1) {
 		get_lidar(nfs);
